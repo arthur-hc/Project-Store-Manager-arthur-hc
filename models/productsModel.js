@@ -47,6 +47,17 @@ const updateById = async (id, name, quantity) => {
   }
 };
 
+const deleteById = async (id) => {
+  try {
+    const db = await mongoConnection.getConnection();
+    const product = await db.collection('products').deleteOne({ _id: ObjectId(id) });
+    if (product.deletedCount === 0) return null;
+    return true;
+  } catch (err) {
+    return err;
+  }
+};
+
 const findOneByName = async (name) => {
   const db = await mongoConnection.getConnection();
   const Product = await db.collection('products').findOne({ name });
@@ -59,4 +70,5 @@ module.exports = {
   getAll,
   getById,
   updateById,
+  deleteById,
 };

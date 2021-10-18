@@ -71,9 +71,32 @@ const updateById = async (id, name, quantity) => {
   return response;
 };
 
+const deleteById = async (id) => {
+  const productExists = await productsModel.getById(id);
+  if (!productExists) {
+    return { err: { code: 'not_found', message: 'Product not found' } };
+  }
+
+  const response = await productsModel.deleteById(id);
+
+  if (response.message) {
+    return { err: { code: 'invalid_data', message: 'Wrong id format' } };
+  }
+
+  return productExists;
+};
+
+const findOneByName = async (name) => {
+  const response = await productsModel.findOneByName(name);
+
+  return response;
+};
+
 module.exports = {
   create,
+  findOneByName,
   getAll,
   getById,
   updateById,
+  deleteById,
 };

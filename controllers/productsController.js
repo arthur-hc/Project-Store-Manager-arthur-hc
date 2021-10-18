@@ -43,9 +43,31 @@ const updateById = async (req, res) => {
   return res.status(200).json(response);
 };
 
+const deleteById = async (req, res) => {
+  const { id } = req.params;
+
+  const response = await productsService.deleteById(id);
+
+  if (response.err) {
+    return res.status(422).json(response);
+  }
+
+  return res.status(200).json(response);
+};
+
+const findOneByName = async (req, res) => {
+  const { name } = req.body;
+
+  const response = await productsService.findOneByName(name);
+
+  return res.status(200).json(response);
+};
+
 module.exports = {
   create,
+  findOneByName,
   getAll,
   getById,
   updateById,
+  deleteById,
 };
