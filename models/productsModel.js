@@ -14,6 +14,16 @@ const create = async (name, quantity) => {
   }
 };
 
+const getAll = async () => {
+  try {
+    const db = await mongoConnection.getConnection();
+    const allProducts = await db.collection('products').find().toArray();
+    return allProducts;
+  } catch (err) {
+    return err;
+  }
+};
+
 const findOneByName = async (name) => {
   const db = await mongoConnection.getConnection();
   const Product = await db.collection('products').findOne({ name });
@@ -23,4 +33,5 @@ const findOneByName = async (name) => {
 module.exports = {
   create,
   findOneByName,
+  getAll,
 };
