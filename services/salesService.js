@@ -104,6 +104,24 @@ const getById = async (id) => {
   return response;
 };
 
+// PARA ADICIONAR UMA ATUALIZAÇÃO NO ESTOQUE NO UPDATE:
+// 1- PRIMEIRO OBTENHA A VENDA QUE IRÁ SER EDITADA. 2- OBTENHA OS PRODUTOS E QTD QUE COMPÕE ESSA VENDA ANTES DE EDITAR. 3- INCREMENTE AO ESTOQUE A QTD DE PRODUTOS DA VENDA ANTES DE EDITAR. 4- RETIRE DO ESTOQUE TODOS OS PRODUTOS QUE COMPÕE A VENDA EDITADA
+const updateById = async (id, products) => {
+  const quantity = inputProductsQuantityValidation(products);
+  const available = await availableProductsValidation(products);
+  if (quantity.error || available.error) {
+    return { err: { code: 'invalid_data', message: 'Wrong product ID or invalid quantity' } };
+  }
+  
+  const response = await salesModel.updateById(id, products);
+
+  if (!response || response.message) {
+    return { err: { code: 'not_found', message: 'Sale not found' } };
+  }
+
+  return response;
+};
+
 module.exports = {
   create,
   inputProductsQuantityValidation,
@@ -112,4 +130,5 @@ module.exports = {
   updateQuantityProducts,
   getAll,
   getById,
+  updateById,
 };
