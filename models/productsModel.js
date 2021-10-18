@@ -14,6 +14,13 @@ const create = async (name, quantity) => {
   }
 };
 
+const findOneByName = async (name) => {
+  const db = await mongoConnection.getConnection();
+  const Product = await db.collection('products').findOne({ name });
+  return Product;
+};
+
 module.exports = {
   create,
+  findOneByName,
 };
