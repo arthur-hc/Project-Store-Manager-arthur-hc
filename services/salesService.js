@@ -88,10 +88,28 @@ const create = async (products) => {
   return response;
 };
 
+const getAll = async () => {
+  const response = await salesModel.getAll();
+
+  return { sales: response };
+};
+
+const getById = async (id) => {
+  const response = await salesModel.getById(id);
+
+  if (!response || response.message) {
+    return { err: { code: 'not_found', message: 'Sale not found' } };
+  }
+
+  return response;
+};
+
 module.exports = {
   create,
   inputProductsQuantityValidation,
   availableProductsValidation,
   availableInStockValidation,
   updateQuantityProducts,
+  getAll,
+  getById,
 };
