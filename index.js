@@ -14,6 +14,8 @@ app.get('/', (_request, response) => {
 
 app.use('/products', require('./router/productsRouter'));
 
+app.use('/sales', require('./router/salesRouter'));
+
 app.listen(PORT, () => {
   console.log('App listening on port 3000!');
 });

@@ -47,6 +47,17 @@ const updateById = async (id, name, quantity) => {
   }
 };
 
+const updateProductQuantityById = async (id, quantityToInc) => {
+  try {
+    const db = await mongoConnection.getConnection();
+    await db.collection('products')
+    .updateOne({ _id: new ObjectId(id) }, { $inc: { quantity: quantityToInc } });
+    return { _id: id };
+  } catch (err) {                                                                                   
+    return err;
+  }
+};
+
 const deleteById = async (id) => {
   try {
     const db = await mongoConnection.getConnection();
@@ -71,4 +82,5 @@ module.exports = {
   getById,
   updateById,
   deleteById,
+  updateProductQuantityById,
 };
