@@ -45,9 +45,21 @@ const updateById = async (id, products) => {
   }
 };
 
+const deleteById = async (id) => {
+  try {
+    const db = await mongoConnection.getConnection();
+    const product = await db.collection('sales').deleteOne({ _id: ObjectId(id) });
+    if (product.deletedCount === 0) return null;
+    return true;
+  } catch (err) {
+    return err;
+  }
+};
+
 module.exports = {
   create,
   getAll,
   getById,
   updateById,
+  deleteById,
 };

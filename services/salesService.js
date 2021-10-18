@@ -122,6 +122,25 @@ const updateById = async (id, products) => {
   return response;
 };
 
+const deleteById = async (id) => {
+  const saleExists = await salesModel.getById(id);
+  if (!saleExists) {
+    return { err: { code: 'invalid_data', message: 'Wrong sale ID format' } };
+  }
+
+  const products = saleExists.itensSold;
+
+  const response = await salesModel.deleteById(id);
+
+  if (response.message) {
+    return { err: { code: 'invalid_data', message: 'Wrong sale ID format' } };
+  }
+
+  await updateQuantityProducts(products, 'increase');
+
+  return saleExists;
+};
+
 module.exports = {
   create,
   inputProductsQuantityValidation,
@@ -131,4 +150,5 @@ module.exports = {
   getAll,
   getById,
   updateById,
+  deleteById,
 };
