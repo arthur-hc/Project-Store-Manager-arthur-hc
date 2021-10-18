@@ -32,7 +32,22 @@ const getAll = async () => {
   return { products: response };
 };
 
+const getById = async (id) => {
+  const response = await productsModel.getById(id);
+
+  if (!response) {
+    return { err: { code: 'not_found', message: 'Product not found' } };
+  }
+
+  if (response.message) {
+    return { err: { code: 'invalid_data', message: 'Wrong id format' } };
+  }
+
+  return response;
+};
+
 module.exports = {
   create,
   getAll,
+  getById,
 };
